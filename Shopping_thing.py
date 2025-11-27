@@ -4,7 +4,6 @@ init(autoreset=True)
 import json
 
 settings_file = "settings.json"
-# Load settings from file if it exists
 if os.path.exists(settings_file):
     with open(settings_file, "r") as f:
         settings.update(json.load(f))
@@ -79,6 +78,7 @@ while True:
     print("2 | Add item to shopping list")
     print("3 | Clear shopping list")
     print("4 | Delete item from shopping list")
+    print("5 | Search for item")
     print("s | Settings")
     print("q | Quit")
     print("--------------------------------")
@@ -199,6 +199,32 @@ while True:
                 print("Red budget threshold updated.")
             except ValueError:
                 print("Invalid number.")
+
+        input("Press Enter to return to menu...")
+        clear_screen()
+
+    elif choice == "5":
+        clear_screen()
+        if not items:
+            print("Your shopping list is empty.")
+            input("Press Enter to return to menu...")
+            clear_screen()
+            continue
+
+        search_name = input("Enter the name of the item to search: ").strip()
+        found = False
+
+        for idx, (name, data) in enumerate(items.items(), start=1):
+            if name.lower() == search_name.lower():
+                print(f"Found item #{idx}: {name}")
+                print(f"   Price: {data['price']:.2f}")
+                print(f"   Amount: {data['amount']}")
+                print(f"   Total cost: {data['price'] * data['amount']:.2f}")
+                found = True
+                break
+
+        if not found:
+            print(f"'{search_name}' not found in your shopping list.")
 
         input("Press Enter to return to menu...")
         clear_screen()
